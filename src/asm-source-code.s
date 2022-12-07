@@ -202,31 +202,31 @@ main
             BL      Startup
 ;---------------------------------------------------------------
 ;>>>>> begin main program code <<<<<
-			BL		Init_UART0_Polling
+			BL	    Init_UART0_Polling
 			
 			LDR		R0,=String1				;Initializes String1 to a NULL character
 			MOVS	R1,#NULL
 			STRB	R1,[R0,#0]
 			
-			LDR		R0,=inputString1				;Initializes inputString1 to a NULL character
+			LDR 	R0,=inputString1		;Initializes inputString1 to a NULL character
 			MOVS	R1,#NULL
 			STRB	R1,[R0,#0]
 			
-			LDR		R0,=inputString2				;Initializes inputString2 to a NULL character
+			LDR 	R0,=inputString2		;Initializes inputString2 to a NULL character
 			MOVS	R1,#NULL
 			STRB	R1,[R0,#0]
 			
-			LDR		R0,=inputCopy					;Initializes inputCopy to a NULL character
+			LDR 	R0,=inputCopy			;Initializes inputCopy to a NULL character
 			MOVS	R1,#NULL
 			STRB	R1,[R0,#0]
 			
-Start		LDR		R0,=prompt1				;Prints "Enter the first 128-bit hex number: "
+Start		LDR 	R0,=prompt1				;Prints "Enter the first 128-bit hex number: "
 			MOVS	R1,#MAX_STRING
-			BL		PutStringSB
+			BL	    PutStringSB
 												
 HexSearch	LDR		R0,=hexprompt			;Prints "0x"
 			MOVS	R1,#MAX_STRING
-			BL		PutStringSB
+			BL	    PutStringSB
 			
 			LDR		R0,=inputString1		;Initialize R0 and R1
 			MOVS	R1,#N						
@@ -272,19 +272,19 @@ HexSearch2	LDR		R0,=hexprompt			;Prints "0x"
 			BL		PutChar
 			B		Start
 											
-Invalid2	LDR 	R0,=promptInvalid		;	Print "Invalid number--try again:"
+Invalid2	LDR 	R0,=promptInvalid		;Print "Invalid number--try again:"
 			MOVS	R1,#MAX_STRING
 			BL	 	PutStringSB
-			B		HexSearch2				;	Loop	
+			B		HexSearch2				;Loop	
 
-Overflow	LDR 	R0,=promptOverflow		;	Print "0xOVERFLOW"
+Overflow	LDR 	R0,=promptOverflow		;Print "0xOVERFLOW"
 			MOVS	R1,#MAX_STRING
 			BL	 	PutStringSB
 			MOVS	R0,#CR					;Prints carriage return
 			BL		PutChar
 			MOVS	R0,#LF					;Prints line feed
 			BL		PutChar
-			B		Start					;	Loop	
+			B		Start					;Loop	
 		
 ;>>>>>   end main program code <<<<<
 ;Stay here
@@ -715,10 +715,10 @@ PutNumU		PROC	{R0-R14}
 ;****************************************************************
 			PUSH	{R0-R3,LR}
 			
-			MOVS	R1,R0			;Initialize R1 to be dividend, input
-			MOVS	R0,#10			;Initialize R0 to be divisor, 10
-			MOVS	R2,#0			;Initialize R2
-			MOVS	R3,#'0'			;Initialize R3
+			MOVS	R1,R0				;Initialize R1 to be dividend, input
+			MOVS	R0,#10				;Initialize R0 to be divisor, 10
+			MOVS	R2,#0				;Initialize R2
+			MOVS	R3,#'0'				;Initialize R3
 
 			CMP		R1,#0
 			BEQ		IfZero
@@ -726,9 +726,9 @@ PutNumU		PROC	{R0-R14}
 DivLoop		BL		DIVU			
 			BEQ		IfZero
 			PUSH	{R1}
-			MOVS	R1,R0					; Make quotient the new dividend (number to divide) 
-			MOVS	R0,#10					; Make 10 the new divisor (number by which to divide)
-			ADDS	R2,R2,#1				; Increment counter
+			MOVS	R1,R0				;Make quotient the new dividend (number to divide) 
+			MOVS	R0,#10				;Make 10 the new divisor (number by which to divide)
+			ADDS	R2,R2,#1			;Increment counter
 			B		DivLoop
 
 IfZero		PUSH	{R1}
@@ -761,7 +761,7 @@ GetChar		PROC	{R1-R13}
 			
 			LDR		R1,=UART0_BASE	
 			MOVS	R3,#RDRF_MASK
-GetWhile	LDRB	R2,[R1,#UART0_S1_OFFSET]	    ;Pulls S1 every iteration			;while (RDRF != 1){
+GetWhile	LDRB	R2,[R1,#UART0_S1_OFFSET]	;Pulls S1 every iteration			;while (RDRF != 1){
 			ANDS	R2,R2,R3					;Clears all bits except 5 (RDRF)	;	check RDRF
 			CMP		R2,#0						;Iterates if RDRF if clear			;}
 			BEQ		GetWhile
@@ -785,9 +785,9 @@ PutChar		PROC	{R1-R13}
 
 			LDR		R1,=UART0_BASE	
 			MOVS	R3,#TDRE_MASK
-PutWhile	LDRB	R2,[R1,#UART0_S1_OFFSET]     ;Pulls S1 every iteration			;while (TDRE != 1) {
+PutWhile	LDRB	R2,[R1,#UART0_S1_OFFSET]    ;Pulls S1 every iteration			;while (TDRE != 1) {
 			ANDS	R2,R2,R3					;Clears all bit except 7 (TDRE)		;	check TDRE;
-			BEQ		PutWhile															;}
+			BEQ		PutWhile														;}
 			STRB	R0,[R1,#UART0_D_OFFSET]											;Write data to UART data register
 			
 			POP		{R1-R3}
@@ -930,12 +930,12 @@ __Vectors_Size  EQU     __Vectors_End - __Vectors
 ;Constants
             AREA    MyConst,DATA,READONLY
 ;>>>>> begin constants here <<<<<
-prompt1		DCB			"Enter the first 128-bit hex number: \0"
-prompt2		DCB			"Enter 128 bit hex number to add:    \0"
-promptInvalid	DCB		"Invalid number--try again:          \0"
-hexprompt	DCB			"0x\0"
-sumprompt	DCB			"Sum:                                0x\0"
-promptOverflow	DCB		"                                    0xOVERFLOW\0"
+prompt1			DCB			"Enter the first 128-bit hex number: \0"
+prompt2			DCB			"Enter 128 bit hex number to add:    \0"
+promptInvalid	DCB			"Invalid number--try again:          \0"
+hexprompt		DCB			"0x\0"
+sumprompt		DCB			"Sum:                                0x\0"
+promptOverflow	DCB			"                                    0xOVERFLOW\0"
 ;>>>>>   end constants here <<<<<
             ALIGN
 ;****************************************************************
