@@ -11,31 +11,31 @@
 ;****************************************************************
 ;Assembler directives
             THUMB
-            OPT    64  ;Turn on listing macro expansions
+            OPT    64		;Turn on listing macro expansions
 ;****************************************************************
 ;Include files
-            GET  MKL05Z4.s     ;Included by start.s
-            OPT  1   		   ;Turn on listing
+            GET  MKL05Z4.s	;Included by start.s
+            OPT  1   		;Turn on listing
 ;****************************************************************
 ;EQUates
-LEAST_BYTE_MASK	 EQU  0x000F
+LEAST_BYTE_MASK	EQU  0x000F
 	
-N EQU 4
+N 		EQU	4
 
 ;UART0 Init Masks
-TDRE_MASK	EQU		2_10000000
-RDRF_MASK	EQU		2_00100000
+TDRE_MASK	EQU	2_10000000
+RDRF_MASK	EQU	2_00100000
 	
 ;String Operations
-MAX_STRING	EQU		80
+MAX_STRING	EQU	80
 
 ;Characters
-CR          EQU  0x0D
-LF          EQU  0x0A
-NULL        EQU  0x00
-LESS_THAN_SYM	EQU	 0x3C
+CR          	EQU  	0x0D
+LF          	EQU  	0x0A
+NULL        	EQU  	0x00
+LESS_THAN_SYM	EQU 	0x3C
+COLON_CHAR  	EQU 	0x3A	
 GREATER_THAN_SYM	EQU	0x3E
-COLON_CHAR  EQU  0x3A	
 
 ; Queue management record field offsets
 IN_PTR      EQU   0
@@ -202,9 +202,9 @@ main
             BL      Startup
 ;---------------------------------------------------------------
 ;>>>>> begin main program code <<<<<
-			BL	    Init_UART0_Polling
+			BL	Init_UART0_Polling
 			
-			LDR		R0,=String1				;Initializes String1 to a NULL character
+			LDR	R0,=String1			;Initializes String1 to a NULL character
 			MOVS	R1,#NULL
 			STRB	R1,[R0,#0]
 			
@@ -220,71 +220,71 @@ main
 			MOVS	R1,#NULL
 			STRB	R1,[R0,#0]
 			
-Start		LDR 	R0,=prompt1				;Prints "Enter the first 128-bit hex number: "
+Start			LDR 	R0,=prompt1			;Prints "Enter the first 128-bit hex number: "
 			MOVS	R1,#MAX_STRING
-			BL	    PutStringSB
+			BL	PutStringSB
 												
-HexSearch	LDR		R0,=hexprompt			;Prints "0x"
+HexSearch		LDR	R0,=hexprompt			;Prints "0x"
 			MOVS	R1,#MAX_STRING
-			BL	    PutStringSB
+			BL	PutStringSB
 			
-			LDR		R0,=inputString1		;Initialize R0 and R1
+			LDR	R0,=inputString1		;Initialize R0 and R1
 			MOVS	R1,#N						
-			BL		GetHexIntMulti			;Takes user input string
+			BL	GetHexIntMulti			;Takes user input string
 			
-			BCS		InvalidNum				;if (number input is correct)
-			LDR		R0,=prompt2				;	Print "Enter 128 bit hex number to add: "
+			BCS	InvalidNum			;if (number input is correct)
+			LDR	R0,=prompt2			;	Print "Enter 128 bit hex number to add: "
 			MOVS	R1,#MAX_STRING
-			BL		PutStringSB
-			B		HexSearch2				;	Loop to hex search 2
+			BL	PutStringSB
+			B	HexSearch2			;	Loop to hex search 2
 			
-InvalidNum	LDR 	R0,=promptInvalid		;	Print "Invalid number--try again:"
+InvalidNum		LDR 	R0,=promptInvalid		;	Print "Invalid number--try again:"
 			MOVS	R1,#MAX_STRING
-			BL	 	PutStringSB
-			B		HexSearch				;	Loop
+			BL	PutStringSB
+			B	HexSearch			;	Loop
 			
 			
-HexSearch2	LDR		R0,=hexprompt			;Prints "0x"
+HexSearch2		LDR	R0,=hexprompt			;Prints "0x"
 			MOVS	R1,#MAX_STRING
-			BL		PutStringSB
+			BL	PutStringSB
 			
-			LDR		R0,=inputString2		;Initialize R0 and R1
+			LDR	R0,=inputString2		;Initialize R0 and R1
 			MOVS	R1,#N							
-			BL		GetHexIntMulti			;Takes user input string
+			BL	GetHexIntMulti			;Takes user input string
 			
-			BCS		Invalid2				;if (number input is correct)
+			BCS	Invalid2			;if (number input is correct)
 			
-			LDR		R0,=sum
-			LDR		R1,=inputString1
-			LDR		R2,=inputString2
+			LDR	R0,=sum
+			LDR	R1,=inputString1
+			LDR	R2,=inputString2
 			MOVS	R3,#N
-			BL		AddIntMultiU			;	add the numbers
-			BCS		Overflow
-			LDR		R0,=sumprompt			;	if C is clear
+			BL	AddIntMultiU			;	add the numbers
+			BCS	Overflow
+			LDR	R0,=sumprompt			;	if C is clear
 			MOVS	R1,#MAX_STRING			;		print "Sum:" and the sum
-			BL		PutStringSB
-			LDR		R0,=sum
+			BL	PutStringSB
+			LDR	R0,=sum
 			MOVS	R1,#N
-			BL		PutHexIntMulti	
-			MOVS	R0,#CR					;Prints carriage return
-			BL		PutChar
-			MOVS	R0,#LF					;Prints line feed
-			BL		PutChar
-			B		Start
+			BL	PutHexIntMulti	
+			MOVS	R0,#CR				;Prints carriage return
+			BL	PutChar
+			MOVS	R0,#LF				;Prints line feed
+			BL	PutChar
+			B	Start
 											
-Invalid2	LDR 	R0,=promptInvalid		;Print "Invalid number--try again:"
+Invalid2		LDR 	R0,=promptInvalid		;Print "Invalid number--try again:"
 			MOVS	R1,#MAX_STRING
-			BL	 	PutStringSB
-			B		HexSearch2				;Loop	
+			BL	PutStringSB
+			B	HexSearch2			;Loop	
 
-Overflow	LDR 	R0,=promptOverflow		;Print "0xOVERFLOW"
+Overflow		LDR 	R0,=promptOverflow		;Print "0xOVERFLOW"
 			MOVS	R1,#MAX_STRING
-			BL	 	PutStringSB
-			MOVS	R0,#CR					;Prints carriage return
-			BL		PutChar
-			MOVS	R0,#LF					;Prints line feed
-			BL		PutChar
-			B		Start					;Loop	
+			BL	PutStringSB
+			MOVS	R0,#CR				;Prints carriage return
+			BL	PutChar
+			MOVS	R0,#LF				;Prints line feed
+			BL	PutChar
+			B	Start				;Loop	
 		
 ;>>>>>   end main program code <<<<<
 ;Stay here
@@ -302,67 +302,67 @@ Init_UART0_Polling	PROC	{R0-R13}
 ;	R2 : Stores the values at memory addresses in R0
 ;****************************************************************
 			PUSH	{R0-R2}
-														;Setting up SIM
-			LDR		R0,=SIM_SOPT2							;SIM_SOPT2
-			LDR		R1,=SIM_SOPT2_UART0SRC_MASK				;Want : 2_XXXX01XXXXXXXXXXXXXXXXXXXXXXXXXX
-			LDR		R2,[R0,#0]
-			BICS	R2,R2,R1									;Clear bit 27
-			LDR		R1,=SIM_SOPT2_UART0SRC_MCGFLLCLK
-			ORRS	R2,R2,R1									;Set bit 26
-			STR		R2,[R0,#0]								
-															;SIM_SOPT5
-			LDR		R0,=SIM_SOPT5								;Want : 2_00000000000000000000000000000000
-			LDR		R1,=SIM_SOPT5_UART0_EXTERN_MASK_CLEAR
-			LDR		R2,[R0,#0]
-			BICS	R2,R2,R1									;Clear all bits
-			STR		R2,[R0,#0]
-															;SIM_SCGC4
-			LDR		R0,=SIM_SCGC4								;Want : 2_XXXXXXXXXXXXXXXXXXXXX0XXXXXXXXXX
-			LDR		R1,=SIM_SCGC4_UART0_MASK
-			LDR		R2,[R0,#0]
-			ORRS	R2,R2,R1									;Set bit 10
-			STR		R2,[R0,#0]
-															;SIM_SCGC5
-			LDR		R0,=SIM_SCGC5								;Want : 2_XXXXXXXXXXXXXXXXXXXXX0XXXXXXXXXX
-			LDR		R1,=SIM_SCGC4_UART0_MASK
-			LDR		R2,[R0,#0]
-			ORRS	R2,R2,R1									;Set bit 10
-			STR		R2,[R0,#0]
-														;Setting up ports
-			LDR		R0,=PORTB_PCR2							;PCR 2
-			LDR		R1,=PORT_PCR_SET_PTB2_UART0_RX				;Want : 2_XXXXXXX0XXXXXXXXXXXXX010XXXXXXXX
-			STR		R1,[R0,#0]
-			LDR		R0,=PORTB_PCR1							;PCR 1
-			LDR		R1,=PORT_PCR_SET_PTB1_UART0_TX				;Want : 2_XXXXXXX0XXXXXXXXXXXXX010XXXXXXXX
-			STR		R1,[R0,#0]
-														;Setting up UART0
-			LDR		R0,=UART0_BASE							
-			MOVS	R1,#UART0_C2_T_R						;Disable UART0
+									;Setting up SIM
+			LDR	R0,=SIM_SOPT2					;SIM_SOPT2
+			LDR	R1,=SIM_SOPT2_UART0SRC_MASK				;Want : 2_XXXX01XXXXXXXXXXXXXXXXXXXXXXXXXX
+			LDR	R2,[R0,#0]
+			BICS	R2,R2,R1							;Clear bit 27
+			LDR	R1,=SIM_SOPT2_UART0SRC_MCGFLLCLK
+			ORRS	R2,R2,R1							;Set bit 26
+			STR	R2,[R0,#0]								
+										;SIM_SOPT5
+			LDR	R0,=SIM_SOPT5						;Want : 2_00000000000000000000000000000000
+			LDR	R1,=SIM_SOPT5_UART0_EXTERN_MASK_CLEAR
+			LDR	R2,[R0,#0]
+			BICS	R2,R2,R1							;Clear all bits
+			STR	R2,[R0,#0]
+										;SIM_SCGC4
+			LDR	R0,=SIM_SCGC4						;Want : 2_XXXXXXXXXXXXXXXXXXXXX0XXXXXXXXXX
+			LDR	R1,=SIM_SCGC4_UART0_MASK
+			LDR	R2,[R0,#0]
+			ORRS	R2,R2,R1							;Set bit 10
+			STR	R2,[R0,#0]
+										;SIM_SCGC5
+			LDR	R0,=SIM_SCGC5						;Want : 2_XXXXXXXXXXXXXXXXXXXXX0XXXXXXXXXX
+			LDR	R1,=SIM_SCGC4_UART0_MASK
+			LDR	R2,[R0,#0]
+			ORRS	R2,R2,R1							;Set bit 10
+			STR	R2,[R0,#0]
+									;Setting up ports
+			LDR	R0,=PORTB_PCR2					;PCR 2
+			LDR	R1,=PORT_PCR_SET_PTB2_UART0_RX				;Want : 2_XXXXXXX0XXXXXXXXXXXXX010XXXXXXXX
+			STR	R1,[R0,#0]
+			LDR	R0,=PORTB_PCR1					;PCR 1
+			LDR	R1,=PORT_PCR_SET_PTB1_UART0_TX				;Want : 2_XXXXXXX0XXXXXXXXXXXXX010XXXXXXXX
+			STR	R1,[R0,#0]
+												;Setting up UART0
+			LDR	R0,=UART0_BASE							
+			MOVS	R1,#UART0_C2_T_R			;Disable UART0
 			LDRB	R2,[R0,#UART0_C2_OFFSET]
 			BICS	R2,R2,R1
 			STRB	R2,[R0,#UART0_C2_OFFSET]
-			MOVS	R1,#UART0_BDH_9600						;UART0_BDH and UART0_BDL
-			STRB	R1,[R0,#UART0_BDH_OFFSET]					;Set baud rate to 9600
+			MOVS	R1,#UART0_BDH_9600				;UART0_BDH and UART0_BDL
+			STRB	R1,[R0,#UART0_BDH_OFFSET]				;Set baud rate to 9600
 			MOVS	R1,#UART0_BDL_9600
 			STRB	R1,[R0,#UART0_BDL_OFFSET]
-			MOVS	R1,#UART0_C1_8N1						;UART0_C1
-			STRB	R1,[R0,#UART0_C1_OFFSET]					;Want : 2_00X0000X
-			MOVS	R1,#UART0_C3_NO_TXINV					;UART_C3
-			STRB	R1,[R0,#UART0_C3_OFFSET]					;Want : 2_XXX00000
+			MOVS	R1,#UART0_C1_8N1				;UART0_C1
+			STRB	R1,[R0,#UART0_C1_OFFSET]				;Want : 2_00X0000X
+			MOVS	R1,#UART0_C3_NO_TXINV				;UART_C3
+			STRB	R1,[R0,#UART0_C3_OFFSET]				;Want : 2_XXX00000
 			MOVS	R1,#UART0_C4_NO_MATCH_OSR_16			;UART_C4
-			STRB	R1,[R0,#UART0_C4_OFFSET]					;Want : 2_00001111
+			STRB	R1,[R0,#UART0_C4_OFFSET]				;Want : 2_00001111
 			MOVS	R1,#UART0_C5_NO_DMA_SSR_SYNC			;UART_C5
-			STRB	R1,[R0,#UART0_C5_OFFSET]					;Want : 2_00000000
-			MOVS	R1,#UART0_S1_CLEAR_FLAGS				;UART_S1
-			STRB	R1,[R0,#UART0_S1_OFFSET]					;Clear flags
+			STRB	R1,[R0,#UART0_C5_OFFSET]				;Want : 2_00000000
+			MOVS	R1,#UART0_S1_CLEAR_FLAGS			;UART_S1
+			STRB	R1,[R0,#UART0_S1_OFFSET]				;Clear flags
 			MOVS	R1,#UART0_S2_NO_RXINV_BRK10_NO_LBKDETECT_CLEAR_FLAGS	;UART_S2
-			STRB	R1,[R0,#UART0_S2_OFFSET]									;Clear flags
-			MOVS	R1,#UART0_C2_T_R						;Enable UART0
+			STRB	R1,[R0,#UART0_S2_OFFSET]					;Clear flags
+			MOVS	R1,#UART0_C2_T_R			;Enable UART0
 			STRB	R1,[R0,#UART0_C2_OFFSET]
 			
-			POP		{R0-R2}
+			POP	{R0-R2}
 			
-			BX		LR
+			BX	LR
 			ENDP
 ;****************************************************************
 AddIntMultiU	PROC	{R1-R14}
@@ -389,34 +389,34 @@ AddIntMultiU	PROC	{R1-R14}
 			MOVS	R6,#0
 			
 			;Load words of R1 and R2 from least significant to most
-LoopAdds	LDM		R1!,{R4}
-			LDM		R2!,{R5}
+LoopAdds		LDM	R1!,{R4}
+			LDM	R2!,{R5}
 			
 			;Restore C
-			MSR		APSR,R6
+			MSR	APSR,R6
 			
 			;Add with carry set
 			ADCS	R4,R4,R5
 			
 			;Store C
-			MRS		R6, APSR			
-			LDR		R7,=APSR_C_MASK
+			MRS	R6, APSR			
+			LDR	R7,=APSR_C_MASK
 			ANDS	R6,R6,R7
 			
 			;Store Sum
-			STM		R0!,{R4}
+			STM	R0!,{R4}
 			
 			;Increment Loop Counter
 			SUBS	R3,R3,#1
-			CMP		R3,#0
-			BNE		LoopAdds
+			CMP	R3,#0
+			BNE	LoopAdds
 			
 			
-EndAdds		;Restore C
-			MSR		APSR,R6
+EndAdds			;Restore C
+			MSR	APSR,R6
 			
-			POP		{R0-R7}
-			BX		LR
+			POP	{R0-R7}
+			BX	LR
 			ENDP
 ;****************************************************************
 GetHexIntMulti	PROC	{R1-R14}
@@ -443,37 +443,37 @@ GetHexIntMulti	PROC	{R1-R14}
 			MOVS	R2,R0
 			
 			;Gets user input string and stores in temporary copy
-			LDR		R0,=inputCopy
+			LDR	R0,=inputCopy
 			LSLS	R1,R1,#3
 			;SUBS	R1,R1,#1
-			BL		GetStringSB
+			BL	GetStringSB
 			
 			MOVS	R4,#0
 			;Convert ASCII codes to hex
-LoopHexConv	LDRB	R3,[R0,R4]
-			CMP		R3,#0
-			BEQ		EndLoopHex
-			CMP		R3,#0x39
-			BLS		ConvNum
-			CMP		R3,#0x41
-			BLO		InvalidInp
-			CMP		R3,#0x46
-			BHI		InvalidInp
+LoopHexConv		LDRB	R3,[R0,R4]
+			CMP	R3,#0
+			BEQ	EndLoopHex
+			CMP	R3,#0x39
+			BLS	ConvNum
+			CMP	R3,#0x41
+			BLO	InvalidInp
+			CMP	R3,#0x46
+			BHI	InvalidInp
 			SUBS	R3,R3,#0x31
 			SUBS	R3,R3,#6
-BackHexCon	STRB	R3,[R0,R4]
+BackHexCon		STRB	R3,[R0,R4]
 			ADDS	R4,R4,#1
-			B		LoopHexConv
+			B	LoopHexConv
 			
-ConvNum		CMP		R3,#0x30
-			BHS		ConvNum2
-			B		InvalidInp
+ConvNum			CMP	R3,#0x30
+			BHS	ConvNum2
+			B	InvalidInp
 
-ConvNum2    SUBS	R3,R3,#0x30
-			B		BackHexCon	
+ConvNum2    		SUBS	R3,R3,#0x30
+			B	BackHexCon	
 			
-EndLoopHex	CMP		R4,#32
-			BNE		InvalidInp
+EndLoopHex		CMP	R4,#32
+			BNE	InvalidInp
 
 			;Consolidate hex
 			MOVS	R4,#0
@@ -487,38 +487,38 @@ PackLoop
 			ORRS	R3,R3,R5		
 			STRB	R3,[R0,R6]
 			ADDS	R6,R6,#1
-			CMP		R6,R1
-			BEQ		CopyLoopS
-			B		PackLoop	
+			CMP	R6,R1
+			BEQ	CopyLoopS
+			B	PackLoop	
 
 ;R0 : address of string copy
 ;R2 : address of string
 ;R4 : offset for string copy, starting at 0
 ;R6 : offset for string, starting at n * 4 
-CopyLoopS	MOVS	R4,#0
+CopyLoopS		MOVS	R4,#0
 			LSRS	R1,R1,#1
 			MOVS	R6,R1
 			SUBS	R6,R6,#1
-CopyLoop	LDRB	R3,[R0,R4]
+CopyLoop		LDRB	R3,[R0,R4]
 			STRB	R3,[R2,R6]
 			ADDS	R4,R4,#1
 			SUBS	R6,R6,#1
-			CMP		R4,R1
-			BEQ		EndPackLoop
-			B		CopyLoop
+			CMP	R4,R1
+			BEQ	EndPackLoop
+			B	CopyLoop
 		
-EndPackLoop	MRS		R4, APSR			;Clear C
-			LDR		R5,=APSR_C_MASK
+EndPackLoop		MRS	R4, APSR			;Clear C
+			LDR	R5,=APSR_C_MASK
 			BICS	R4,R4,R5
-			MSR		APSR, R4
-			B		EndHexInt
+			MSR	APSR, R4
+			B	EndHexInt
 			
-InvalidInp	MRS		R4, APSR			;Set C
-			LDR		R5,=APSR_C_MASK	
+InvalidInp		MRS	R4, APSR			;Set C
+			LDR	R5,=APSR_C_MASK	
 			ORRS	R4,R4,R5
-			MSR		APSR, R4
+			MSR	APSR, R4
 
-EndHexInt	POP 	{R0-R6, PC}
+EndHexInt		POP 	{R0-R6, PC}
 			ENDP
 ;****************************************************************
 PutHexIntMulti	PROC	{R1-R14}
@@ -536,20 +536,20 @@ PutHexIntMulti	PROC	{R1-R14}
 ;	R1 : n * 4
 ;	R2 : address of n-word number to output
 ;****************************************************************
-		PUSH	{R0-R2, LR}
+			PUSH	{R0-R2, LR}
 		
-		;Initialize loop counter and memory address
-		LSLS	R1,R1,#2
-		SUBS	R1,R1,#4
-		MOVS	R2,R0
+			;Initialize loop counter and memory address
+			LSLS	R1,R1,#2
+			SUBS	R1,R1,#4
+			MOVS	R2,R0
 		
-		;Load words from most significant to least significant
-PutLoop	LDR		R0,[R2,R1]
-		BL		PutNumHex
-		SUBS	R1,R1,#4
-		BPL		PutLoop
+			;Load words from most significant to least significant
+PutLoop			LDR	R0,[R2,R1]
+			BL	PutNumHex
+			SUBS	R1,R1,#4
+			BPL	PutLoop
 
-EndPutHex	POP		{R0-R2, PC}		
+EndPutHex		POP	{R0-R2, PC}		
 			ENDP				
 ;****************************************************************
 PutNumHex	PROC	{R0-R14}
@@ -571,33 +571,33 @@ PutNumHex	PROC	{R0-R14}
 			MOVS	R2,#28
 			MOVS	R3,#LEAST_BYTE_MASK
 			
-LoopHex		MOVS	R0,R1
+LoopHex			MOVS	R0,R1
 			ASRS	R0,R0,R2
 			ANDS	R0,R0,R3
-			CMP		R0,#10
-			BHS		HexCodeConv
+			CMP	R0,#10
+			BHS	HexCodeConv
 			ADDS	R0,R0,#0x30
-BackHex		BL		PutChar
+BackHex			BL	PutChar
 			SUBS	R2,R2,#4
-			CMP		R2,#0
-			BEQ		EndHex
-			B		LoopHex
+			CMP	R2,#0
+			BEQ	EndHex
+			B	LoopHex
 
-HexCodeConv ADDS	R0,R0,#0x37
-			B		BackHex
+HexCodeConv	 	ADDS	R0,R0,#0x37
+			B	BackHex
 
-EndHex		MOVS	R0,R1
+EndHex			MOVS	R0,R1
 			ANDS	R0,R0,R3
-			CMP		R0,#10
-			BHS		HexCode2
+			CMP	R0,#10
+			BHS	HexCode2
 			ADDS	R0,R0,#0x30
-BackHex2	BL		PutChar
-			B		EndHexConv
+BackHex2		BL	PutChar
+			B	EndHexConv
 
-HexCode2    ADDS	R0,R0,#0x37
-			B		BackHex2
+HexCode2    		ADDS	R0,R0,#0x37
+			B	BackHex2
 
-EndHexConv	POP		{R0-R3,PC}
+EndHexConv		POP	{R0-R3,PC}
 
 			ENDP
 ;****************************************************************
@@ -614,9 +614,9 @@ PutNumUB	PROC	{R0-R14}
 			
 			MOVS	R1,#LEAST_BYTE_MASK
 			ANDS	R0,R0,R1
-			BL		PutNumU
+			BL	PutNumU
 
-			POP		{R0,R1,PC}
+			POP	{R0,R1,PC}
 			ENDP
 ;****************************************************************
 GetStringSB	PROC	{R0-R14}
@@ -640,29 +640,29 @@ GetStringSB	PROC	{R0-R14}
 			MOVS	R3,R1					;Initialize R3
 			MOVS	R1,R0					;Initialize R1
 			MOVS	R2,#0					;Initialize R2
-StartLoop	BL		GetChar					;Initialize R0
-			CMP		R2,R3					;Check if index (number of characters entered) has hit buffer limit
-			BHS		BufferHit				;If it has, go to separate buffer loop
-			BL		PutChar
-			CMP		R0,#CR					
-			BEQ		EndLoop					;while(character != CR){
+StartLoop		BL	GetChar					;Initialize R0
+			CMP	R2,R3					;Check if index (number of characters entered) has hit buffer limit
+			BHS	BufferHit				;If it has, go to separate buffer loop
+			BL	PutChar
+			CMP	R0,#CR					
+			BEQ	EndLoop					;while(character != CR){
 			STRB	R0,[R1,R2]				;	Store character, then increment pointer
 			ADDS	R2,R2,#1				;	GetChar
-			B		StartLoop
+			B	StartLoop
 			
-BufferHit	CMP		R0,#CR
-			BEQ		EndLoop
-			BL		GetChar
-			B		BufferHit
+BufferHit		CMP	R0,#CR
+			BEQ	EndLoop
+			BL	GetChar
+			B	BufferHit
 
-EndLoop		MOVS	R0,#NULL				;Store null character at current pointer
+EndLoop			MOVS	R0,#NULL				;Store null character at current pointer
 			STRB	R0,[R1,R2]
 			MOVS	R0,#CR					;Prints carriage return
-			BL		PutChar
+			BL	PutChar
 			MOVS	R0,#LF					;Prints line feed
-			BL		PutChar
+			BL	PutChar
 
-			POP		{R0-R3,PC}
+			POP	{R0-R3,PC}
 			ENDP
 ;****************************************************************
 PutStringSB	PROC	{R0-R14}
@@ -687,17 +687,17 @@ PutStringSB	PROC	{R0-R14}
 			MOVS	R2,#0					;Initialize R2
 			LDRB	R0,[R1,R2]				;Initialize R0
 
-WhileLoop	CMP		R2,R3					;Check if index (number of characters printed) has hit buffer limit
-			BEQ		EndWhileLoop			;If it has, break
-			CMP		R0,#NULL				;while(character != NULL){
-			BEQ		EndWhileLoop			;	PutChar
-			BL		PutChar					;	Read next character (increment pointer)
+WhileLoop		CMP	R2,R3					;Check if index (number of characters printed) has hit buffer limit
+			BEQ	EndWhileLoop				;If it has, break
+			CMP	R0,#NULL				;while(character != NULL){
+			BEQ	EndWhileLoop				;	PutChar
+			BL	PutChar					;	Read next character (increment pointer)
 			ADDS	R2,R2,#1				;}
 			LDRB	R0,[R1,R2]
-			B		WhileLoop
+			B	WhileLoop
 EndWhileLoop
 
-			POP		{R0-R3, PC}
+			POP	{R0-R3, PC}
 			ENDP
 ;****************************************************************
 PutNumU		PROC	{R0-R14}
@@ -720,31 +720,31 @@ PutNumU		PROC	{R0-R14}
 			MOVS	R2,#0				;Initialize R2
 			MOVS	R3,#'0'				;Initialize R3
 
-			CMP		R1,#0
-			BEQ		IfZero
+			CMP	R1,#0
+			BEQ	IfZero
 			
-DivLoop		BL		DIVU			
-			BEQ		IfZero
+DivLoop			BL	DIVU			
+			BEQ	IfZero
 			PUSH	{R1}
 			MOVS	R1,R0				;Make quotient the new dividend (number to divide) 
 			MOVS	R0,#10				;Make 10 the new divisor (number by which to divide)
 			ADDS	R2,R2,#1			;Increment counter
-			B		DivLoop
+			B	DivLoop
 
-IfZero		PUSH	{R1}
+IfZero			PUSH	{R1}
 			ADDS	R2,R2,#1
-			B		PrintLoop
+			B	PrintLoop
 
-PrintLoop	CMP		R2,#0
-			BEQ		EndPrint
-			POP		{R0}
+PrintLoop		CMP	R2,#0
+			BEQ	EndPrint
+			POP	{R0}
 			ADDS	R0,R0,R3
-			BL		PutChar
+			BL	PutChar
 			SUBS	R2,R2,#1
-			B		PrintLoop
+			B	PrintLoop
 EndPrint
 			
-			POP		{R0-R3, PC}
+			POP	{R0-R3, PC}
 			ENDP
 ;***************************************************************
 GetChar		PROC	{R1-R13}
@@ -759,16 +759,16 @@ GetChar		PROC	{R1-R13}
 ;***************************************************************
 			PUSH	{R1-R3}
 			
-			LDR		R1,=UART0_BASE	
+			LDR	R1,=UART0_BASE	
 			MOVS	R3,#RDRF_MASK
-GetWhile	LDRB	R2,[R1,#UART0_S1_OFFSET]	;Pulls S1 every iteration			;while (RDRF != 1){
-			ANDS	R2,R2,R3					;Clears all bits except 5 (RDRF)	;	check RDRF
-			CMP		R2,#0						;Iterates if RDRF if clear			;}
-			BEQ		GetWhile
-			LDRB	R0,[R1,#UART0_D_OFFSET]											;Read from data register
+GetWhile		LDRB	R2,[R1,#UART0_S1_OFFSET]		;Pulls S1 every iteration			;while (RDRF != 1){
+			ANDS	R2,R2,R3				;Clears all bits except 5 (RDRF)		;	check RDRF
+			CMP	R2,#0					;Iterates if RDRF if clear			;}
+			BEQ	GetWhile
+			LDRB	R0,[R1,#UART0_D_OFFSET]			;Read from data register
 
-			POP		{R1-R3}
-			BX		LR
+			POP	{R1-R3}
+			BX	LR
 			ENDP
 ;***************************************************************
 PutChar		PROC	{R1-R13}
@@ -783,15 +783,15 @@ PutChar		PROC	{R1-R13}
 ;***************************************************************
 			PUSH	{R1-R3}
 
-			LDR		R1,=UART0_BASE	
+			LDR	R1,=UART0_BASE	
 			MOVS	R3,#TDRE_MASK
-PutWhile	LDRB	R2,[R1,#UART0_S1_OFFSET]    ;Pulls S1 every iteration			;while (TDRE != 1) {
-			ANDS	R2,R2,R3					;Clears all bit except 7 (TDRE)		;	check TDRE;
-			BEQ		PutWhile														;}
-			STRB	R0,[R1,#UART0_D_OFFSET]											;Write data to UART data register
+PutWhile		LDRB	R2,[R1,#UART0_S1_OFFSET]    		;Pulls S1 every iteration			;while (TDRE != 1) {
+			ANDS	R2,R2,R3				;Clears all bit except 7 (TDRE)			;	check TDRE;
+			BEQ	PutWhile										;}
+			STRB	R0,[R1,#UART0_D_OFFSET]			;Write data to UART data register
 			
-			POP		{R1-R3}
-			BX		LR
+			POP	{R1-R3}
+			BX	LR
 			ENDP
 ;****************************************************************
 DIVU		PROC	{R2-R14}
@@ -799,7 +799,7 @@ DIVU		PROC	{R2-R14}
 ; Computes unsigned integer division
 ; Inputs
 ;	  R0 : divisor (number by which to divide)
-;     R1 : dividend (number to divide)
+;     	  R1 : dividend (number to divide)
 ; Outputs
 ;	  R0 : quotient
 ;	  R1 : remainder
@@ -811,47 +811,47 @@ DIVU		PROC	{R2-R14}
 ;****************************************************************
 			PUSH	{R3-R5}
 
-			CMP		R0, #0				;if (divisor == 0) {
-			BEQ		DivBy0				
+			CMP	R0, #0				;if (divisor == 0) {
+			BEQ	DivBy0				
 
-			CMP		R1, #0				;} else if (dividend == 0) {
-			BEQ		Div0				
-										;} else {
-			CMP		R1, R0				;	while (Dividend >= Divisor){
-			BLO		EndEarly			;		
+			CMP	R1, #0				;} else if (dividend == 0) {
+			BEQ	Div0				
+								;} else {
+			CMP	R1, R0				;	while (Dividend >= Divisor){
+			BLO	EndEarly			;		
 			MOVS	R3, #0
-while		SUBS	R1,R1,R0			;		Dividend = Dividend - Divisor
+while			SUBS	R1,R1,R0			;		Dividend = Dividend - Divisor
 			ADDS    R3,#1				;		Quotient = Quotient + 1
-			CMP		R1, R0				;	}
-			BHS		while				;}
-			MOVS    R0, R3				;
-			B		EndWhile							
+			CMP	R1, R0				;	}
+			BHS	while				;}
+			MOVS    R0, R3				
+			B	EndWhile							
 										
-DivBy0		MRS		R4, APSR			;Set C
-			LDR		R5,=APSR_C_MASK	
+DivBy0			MRS	R4, APSR			;Set C
+			LDR	R5,=APSR_C_MASK	
 			ORRS	R4,R4,R5
-			MSR		APSR, R4
-			B		EndSubR
+			MSR	APSR, R4
+			B	EndSubR
 			
-Div0		MOVS	R0,#0				;Set outputs to 0
+Div0			MOVS	R0,#0				;Set outputs to 0
 			MOVS	R1,#0
-			MRS		R4, APSR			;Set Z
-			LDR		R5,=APSR_Z_MASK
+			MRS	R4, APSR			;Set Z
+			LDR	R5,=APSR_Z_MASK
 			ORRS	R4,R4,R5
-			MSR		APSR, R4
-			B		EndWhile
+			MSR	APSR, R4
+			B	EndWhile
 			
-EndEarly	MOVS	R0,#0				;Set quotient (R0) to 0
-			B		EndWhile
+EndEarly		MOVS	R0,#0				;Set quotient (R0) to 0
+			B	EndWhile
 			
-EndWhile	MRS		R4, APSR			;Clear C
-			LDR		R5,=APSR_C_MASK
+EndWhile		MRS	R4, APSR			;Clear C
+			LDR	R5,=APSR_C_MASK
 			BICS	R4,R4,R5
-			MSR		APSR, R4
-			B		EndSubR
+			MSR	APSR, R4
+			B	EndSubR
 			
-EndSubR		POP     {R3-R5}
-			BX		LR
+EndSubR			POP     {R3-R5}
+			BX	LR
 			ENDP
 ;>>>>>   end subroutine code <<<<<
             ALIGN
@@ -930,12 +930,12 @@ __Vectors_Size  EQU     __Vectors_End - __Vectors
 ;Constants
             AREA    MyConst,DATA,READONLY
 ;>>>>> begin constants here <<<<<
-prompt1			DCB			"Enter the first 128-bit hex number: \0"
-prompt2			DCB			"Enter 128 bit hex number to add:    \0"
-promptInvalid	DCB			"Invalid number--try again:          \0"
-hexprompt		DCB			"0x\0"
-sumprompt		DCB			"Sum:                                0x\0"
-promptOverflow	DCB			"                                    0xOVERFLOW\0"
+prompt1			DCB		"Enter the first 128-bit hex number: \0"
+prompt2			DCB		"Enter 128 bit hex number to add:    \0"
+promptInvalid		DCB		"Invalid number--try again:          \0"
+hexprompt		DCB		"0x\0"
+sumprompt		DCB		"Sum:                                0x\0"
+promptOverflow		DCB		"                                    0xOVERFLOW\0"
 ;>>>>>   end constants here <<<<<
             ALIGN
 ;****************************************************************
@@ -943,10 +943,10 @@ promptOverflow	DCB			"                                    0xOVERFLOW\0"
             AREA    MyData,DATA,READWRITE
 ;>>>>> begin variables here <<<<<
 String1		SPACE	MAX_STRING
-inputString1 SPACE	4 * N 
-inputString2 SPACE	4 * N
+inputString1 	SPACE	4 * N 
+inputString2 	SPACE	4 * N
 inputCopy	SPACE	4 * N
-sum			SPACE	4 * N
+sum		SPACE	4 * N
 ;>>>>>   end variables here <<<<<
             ALIGN
             END
