@@ -1,5 +1,5 @@
 # multiprecision-arithmetic<br>
-An assembly program that computes the sum of two user input 128-bit numbers using multiprecision arithmetic. The Keil uVision5 environment is used with FRDM-KL05Z board from NXP.
+An assembly program that computes the sum of two user input 128-bit numbers using multiprecision arithmetic. The FRDM-KL05Z board from NXP is used.
 
 ![ProgramResults](https://github.com/Helena-Lynd/multiprecision-arithmetic/blob/main/program-results.png?raw=true)
 
