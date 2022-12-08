@@ -1,16 +1,18 @@
 # multiprecision-arithmetic<br>
 An assembly program to be run on a KL05 board that computes the sum of two user input 128-bit numbers using multiprecision arithmetic.
-![ProgramResults](https://user-images.githubusercontent.com/114961330/193895174-0d110c3b-b386-47ae-92b0-8d53030728d.png)
+
+![ProgramResults](https://github.com/Helena-Lynd/multiprecision-arithmetic/blob/main/program-results.png?raw=true)
+
 ## Description<br>
-I will update this with an in depth description shortly. Include pictures from successful runs.
+The KL05 word size is only 32 bits, yet there are instances where programmers will need to sum numbers that exceeed that limitation. This program uses multiprecision arithmetic, a technique that adds numbers larger than the word size by adding the least significant words and using the carry bit in the addition of the next least significant words until addition is complete. This program only accepts valid hexadecimal characters as input, and will not sum the numbers until two valid inputs have been received.
 ## Getting Started<br>
 ### Dependencies
-- A program that will compile the source files into an executable (e.g. Keil)
-- KL05 board with a connection to some sort of terminal (e.g. PuTTY)
+- A method to compile the source files into an executable (e.g. Keil IDE)
+- KL05 board connected to a terminal (e.g. PuTTY)
 ### Installing
-- 
+- Download the source files provided to your directory of choice
+- Compile the source files into an executable
 ### Executing
-- Load the executable to your boards flash memory and run it with a connected terminal
-  window open.
+- Load the executable to your boards flash memory and run it with a connected terminal window open
 ## Authors<br>
 Helena Lynd
