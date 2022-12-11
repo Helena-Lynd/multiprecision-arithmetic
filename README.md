@@ -14,6 +14,6 @@ The KL05 word size is only 32 bits, yet there are instances where programmers wi
 - Compile the source files into an executable
 ### Executing
 - Load the executable to your boards flash memory and run it with a connected terminal window open
-- When prompted, enter the 128 bit numbers to sum
+- When prompted, enter the 128 bit numbers to sum (Note: lowercase hex letters and input less than 32 digits are not accepted as valid input)
 ## Authors<br>
 Helena Lynd
