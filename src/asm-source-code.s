@@ -335,7 +335,7 @@ Init_UART0_Polling	PROC	{R0-R13}
 			LDR	R0,=PORTB_PCR1					;PCR 1
 			LDR	R1,=PORT_PCR_SET_PTB1_UART0_TX				;Want : 2_XXXXXXX0XXXXXXXXXXXXX010XXXXXXXX
 			STR	R1,[R0,#0]
-												;Setting up UART0
+									;Setting up UART0
 			LDR	R0,=UART0_BASE							
 			MOVS	R1,#UART0_C2_T_R			;Disable UART0
 			LDRB	R2,[R0,#UART0_C2_OFFSET]
@@ -445,7 +445,6 @@ GetHexIntMulti	PROC	{R1-R14}
 			;Gets user input string and stores in temporary copy
 			LDR	R0,=inputCopy
 			LSLS	R1,R1,#3
-			;SUBS	R1,R1,#1
 			BL	GetStringSB
 			
 			MOVS	R4,#0
