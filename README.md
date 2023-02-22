@@ -23,5 +23,6 @@ git clone git@github.com:Helena-Lynd/multiprecision-arithmetic.git
   - The board has a button that can be pressed to initiate the program
 - When prompted, enter the 128 bit numbers to sum
   - IMPORTANT: lowercase hex letters and input less than 32 digits are not accepted as valid input
+  - The program saves up to 32 entered characters, then stops saving any input characters. This means that if you wanted to enter all '1's, you would not have to count out 32 individual characters when typing, you could simply hold down the key until the program stops accepting new characters.
 ## Authors<br>
 Helena Lynd
