@@ -12,7 +12,7 @@ Many microprocessors have a word size of only 32 bits, yet there are instances w
 ### Installing
 - Download the source files provided to your directory of choice
 ```
-git clone 
+git clone git@github.com:Helena-Lynd/multiprecision-arithmetic.git
 ```
 - Compile the source files into an executable
 ### Executing
