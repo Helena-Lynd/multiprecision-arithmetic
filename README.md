@@ -4,7 +4,7 @@ An assembly program that computes the sum of two user input 128-bit numbers usin
 ![ProgramResults](https://github.com/Helena-Lynd/multiprecision-arithmetic/blob/main/program-results.png?raw=true)
 
 ## Description<br>
-Many microprocessors have a word size of only 32 bits, yet there are instances where programmers will need to sum numbers that exceeed that limitation. This program solves that problem using multiprecision arithmetic, a technique that adds numbers larger than the word size by adding the least significant words and using the carry bit in the addition of the next least significant words until addition is complete. This program only accepts valid hexadecimal characters as input, and will not sum the numbers until two valid inputs have been received.
+Many microcontrollers have a word size of only 32 bits, yet there are instances where programmers will need to sum numbers that exceeed that limitation. This program solves that problem using multiprecision arithmetic, a technique that adds numbers larger than the word size by adding the least significant words and using the carry bit in the addition of the next least significant words until addition is complete. This program only accepts valid hexadecimal characters as input, and will not sum the numbers until two valid inputs have been received.
 ## Getting Started<br>
 ### Dependencies
 - A method to compile the source files into an executable (e.g. Keil uVision5)
