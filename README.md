@@ -15,8 +15,13 @@ Many microprocessors have a word size of only 32 bits, yet there are instances w
 git clone git@github.com:Helena-Lynd/multiprecision-arithmetic.git
 ```
 - Compile the source files into an executable
+  - If using an IDE, use the "Build" or "Rebuild" feature
 ### Executing
-- Load the executable to your boards flash memory and run it with a connected terminal window open
-- When prompted, enter the 128 bit numbers to sum (Note: lowercase hex letters and input less than 32 digits are not accepted as valid input)
+- Load the executable to your boards flash memory
+  - If using an IDE, use the "Download" feature
+- Run the program with a connected terminal window open
+  - The board has a button that can be pressed to initiate the program
+- When prompted, enter the 128 bit numbers to sum
+  - IMPORTANT: lowercase hex letters and input less than 32 digits are not accepted as valid input
 ## Authors<br>
 Helena Lynd
