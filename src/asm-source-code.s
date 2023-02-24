@@ -237,7 +237,7 @@ HexSearch		LDR	R0,=hexprompt			;Prints "0x"
 			MOVS	R1,#MAX_STRING
 			BL	PutStringSB
 			B	HexSearch2			;	Loop to hex search 2
-			
+								;else
 InvalidNum		LDR 	R0,=promptInvalid		;	Print "Invalid number--try again:"
 			MOVS	R1,#MAX_STRING
 			BL	PutStringSB
